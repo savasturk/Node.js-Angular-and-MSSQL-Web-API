@@ -8,7 +8,7 @@ Another layer is api. In this layer, I placed business logic codes. For example,
 The service layer is written for front-end. The logic is like subscribing a newspaper. Make a request and then subscribe the service, then wait for reply. This feature provides loading static HTML elements and if it si fetced load other elements.
 The component layer was used for managing front-end operations, like button event handling, routing, calling services, drawing...
 The HTML layer was used for presentation. 
-All layers can be seen in the prject navigation-bar. All layers are seperated clearly. For example api layer can be changed without changing other layer
+All layers can be seen in the project navigation-bar. All layers are seperated clearly. For example api layer can be changed without changing other layer
 
 System Constraints
 
