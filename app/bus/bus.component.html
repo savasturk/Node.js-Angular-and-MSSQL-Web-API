@@ -1,0 +1,21 @@
+<h2>Bus</h2>
+<form [formGroup]="busForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="BusID">BusID</label>
+    <input type="text" formControlName="BusID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.BusID.errors }" />
+    <div *ngIf="submitted && f.BusID.errors" class="invalid-feedback">
+      <div *ngIf="f.BusID.errors.required">BusID is required</div>
+    </div>
+  </div>
+  <div>
+    <p>Retrieved BusID is: </p> {{ busId }}
+  </div>
+  <div>All Bus Ids: </div> {{ busIds }}
+  <div class="form-group">
+      <button id="insertButton" class="btn btn-primary" (click)="insertButtonFunction()">Insert</button>
+      <button id="deleteButton" class="btn btn-primary" (click)="deleteButtonFunction()">Delete</button>
+      <button id="updateButton" class="btn btn-primary" (click)="updateButtonFunction()">Update</button>
+      <button id="getAllButton" class="btn btn-primary" (click)="getAllButtonFunction()">Get All</button>
+      <button id="getByIdButton" class="btn btn-primary" (click)="getByIdButtonFunction()">Get by ID</button>
+  </div>
+</form>

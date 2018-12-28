@@ -1,0 +1,22 @@
+<canvas id='canvasMap'>
+</canvas>
+<button style="margin-left: 5px;" (click)="calculateTDoA()">Calculate</button>
+<button style="margin-left: 5px" (click)="removePoints()">Remove Points</button>
+<button style="margin-left: 5px" (click)="removeCircles()">Remove Distance Circles</button>
+<button style="margin-left: 5px" (click)="showPoints()">Incorrect Points</button>
+<x-chartist id='chart1'
+[data]="dataMul"
+[type]="type">
+</x-chartist>
+<x-chartist id='chart2'
+[data]="dataSum"
+[type]="type">
+</x-chartist>
+<x-chartist id='chart3'
+[data]="dataDivMul"
+[type]="type">
+</x-chartist>
+<x-chartist id='chart4'
+[data]="dataDivSum"
+[type]="type">
+</x-chartist>

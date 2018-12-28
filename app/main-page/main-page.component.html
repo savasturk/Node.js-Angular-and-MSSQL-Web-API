@@ -1,0 +1,22 @@
+<h2>Main Page</h2>
+<form [formGroup]="mainPageForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <p> <button class="btn btn-primary" (click)="goToBusPage()">Bus</button></p>
+    <p> <button class="btn btn-primary" (click)="goToBusStopPage()">Bus Stops</button></p>
+    <p> <button [disabled]="loading" class="btn btn-primary" (click)="goToEmployeePage()">Employee</button></p>
+    <p> <button [disabled]="loading" class="btn btn-primary" (click)="goToPassGenerationPage()">Pass Generation</button></p>
+    <p> <button [disabled]="loading" class="btn btn-primary" (click)="goToPassRegistrationPage()">Pass Registration</button></p>
+    <p> <button [disabled]="loading" class="btn btn-primary" (click)="goToRequestPage()">Request</button></p>
+    <p> <button [disabled]="loading" class="btn btn-primary" (click)="goToRouteInformationPage()">Route Information</button></p>
+    <!-- <p> <button [disabled]="loading" class="btn btn-primary">User Information</button></p> -->
+    <p> <button [disabled]="loading" class="btn btn-primary" (click)="goToVehicleInformationPage()">Vehicle Information</button></p>
+    <p> <button [disabled]="loading" class="btn btn-primary" (click)="goToVerificationPage()">Verification</button></p>
+
+
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Insert</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Delete</a>-> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Update</a> -> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get All Employees</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get Employee by SSN</a>  -->
+  </div>
+</form>

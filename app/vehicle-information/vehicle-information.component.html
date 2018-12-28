@@ -1,0 +1,41 @@
+<h2>Vehicle Information</h2>
+<form [formGroup]="vehicleInformationForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="VehicleName">VehicleName</label>
+    <input type="text" formControlName="VehicleName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.VehicleName.errors }" />
+  </div>
+  <div class="form-group">
+    <label for="VehicleID">VehicleID</label>
+    <input type="text" formControlName="VehicleID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.VehicleID.errors }" />
+    <div *ngIf="submitted && f.VehicleID.errors" class="invalid-feedback">
+      <div *ngIf="f.VehicleID.errors.required">VehicleID is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="VehicleType">VehicleType</label>
+    <input type="text" formControlName="VehicleType" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.VehicleType.errors }" />
+  </div>
+  <div class="form-group">
+      <button id="insertButton" class="btn btn-primary" (click)="insertButtonFunction()">Insert</button>
+      <button id="deleteButton" class="btn btn-primary" (click)="deleteButtonFunction()">Delete</button>
+      <button id="updateButton" class="btn btn-primary" (click)="updateButtonFunction()">Update</button>
+      <button id="getAllButton" class="btn btn-primary" (click)="getAllButtonFunction()">Get All</button>
+      <button id="getByIdButton" class="btn btn-primary" (click)="getByIdButtonFunction()">Get by ID</button>
+
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Insert</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Delete</a>-> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Update</a> -> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get All Employees</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get Employee by SSN</a>  -->
+  </div>
+</form>
+<div>
+    <p>                   VehicleName    VehicleID  VehicleType   </p>
+      <p>All Vehicle Informations: </p> {{ vehicleIds }}
+  </div>
+  
+  
+  <div>
+      <p>                   VehicleName    VehicleID  VehicleType     </p>
+        <p>Selected Vehicle Information : </p> {{ vehicleId }}
+    </div>

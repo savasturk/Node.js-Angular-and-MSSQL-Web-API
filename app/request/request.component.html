@@ -1,0 +1,42 @@
+<h2>Request</h2>
+<form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="RequestID">RequestID</label>
+    <input type="text" formControlName="RequestID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RequestID.errors }" />
+    <div *ngIf="submitted && f.RequestID.errors" class="invalid-feedback">
+      <div *ngIf="f.RequestID.errors.required">RequestID is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="RequestType">RequestType</label>
+    <input type="text" formControlName="RequestType" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RequestType.errors }" />
+    <div *ngIf="submitted && f.RequestType.errors" class="invalid-feedback">
+      <div *ngIf="f.RequestType.errors.required">RequestType is required</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+      <button id="insertButton" class="btn btn-primary" (click)="insertButtonFunction()">Insert</button>
+      <button id="deleteButton" class="btn btn-primary" (click)="deleteButtonFunction()">Delete</button>
+      <button id="updateButton" class="btn btn-primary" (click)="updateButtonFunction()">Update</button>
+      <button id="getAllButton" class="btn btn-primary" (click)="getAllButtonFunction()">Get All</button>
+      <button id="getByIdButton" class="btn btn-primary" (click)="getByIdButtonFunction()">Get by ID</button>
+
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Insert</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Delete</a>-> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Update</a> -> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get All Employees</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get Employee by SSN</a>  -->
+  </div>
+</form>
+
+<div>
+    <p>                   RequestID    RequestType    </p>
+      <p>All Requests: </p> {{ requestIDs }}
+  </div>
+  
+  
+  <div>
+      <p>                   RequestID    RequestType     </p>
+        <p>Selected Request By RequestID : </p> {{ requestID }}
+    </div>

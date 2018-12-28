@@ -1,0 +1,30 @@
+<h2>Amin</h2>
+<form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="AdminName">AdminName</label>
+    <input type="text" formControlName="AdminName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AdminName.errors }" />
+    <div *ngIf="submitted && f.AdminName.errors" class="invalid-feedback">
+      <div *ngIf="f.AdminName.errors.required">AdminName is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="AdminID">AdminID</label>
+    <input type="text" formControlName="AdminID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AdminID.errors }" />
+    <div *ngIf="submitted && f.AdminID.errors" class="invalid-feedback">
+      <div *ngIf="f.AdminID.errors.required">AdminID is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button [disabled]="loading" class="btn btn-primary">Insert</button>
+    <button [disabled]="loading" class="btn btn-primary">Delete</button>
+    <button [disabled]="loading" class="btn btn-primary">Update</button>
+    <button [disabled]="loading" class="btn btn-primary">Get All Admins</button>
+    <button [disabled]="loading" class="btn btn-primary">Get Admin by AdminID</button>
+
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Insert</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Delete</a>-> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Update</a> -> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get All Employees</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get Employee by SSN</a>  -->
+  </div>
+</form>

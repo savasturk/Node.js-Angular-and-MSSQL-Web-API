@@ -1,0 +1,61 @@
+<h2>Bus Stops</h2>
+<form [formGroup]="busStopsForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="LatitudeDegree">LatitudeDegree</label>
+    <input type="text" formControlName="LatitudeDegree" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LatitudeDegree.errors }" />
+    
+  </div>
+  <div class="form-group">
+    <label for="LatitudeMinute">LatitudeMinute</label>
+    <input type="text" formControlName="LatitudeMinute" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LatitudeMinute.errors }" />
+   
+  </div>
+  <div class="form-group">
+    <label for="LatitudeSecond">LatitudeSecond</label>
+    <input type="text" formControlName="LatitudeSecond" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LatitudeSecond.errors }" />
+    
+  </div>
+  <div class="form-group">
+    <label for="LongitudeDegree">LongitudeDegree</label>
+    <input type="text" formControlName="LongitudeDegree" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LongitudeDegree.errors }" />
+    
+  </div>
+  <div class="form-group">
+    <label for="LongitudeMinute">LongitudeMinute</label>
+    <input type="text" formControlName="LongitudeMinute" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LongitudeMinute.errors }" />
+
+  </div>
+  <div class="form-group">
+    <label for="LongitudeSecond">LongitudeSecond</label>
+    <input type="text" formControlName="LongitudeSecond" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LongitudeSecond.errors }" />
+    
+  </div>
+  <div class="form-group">
+    <label for="StopName">StopName</label>
+    <input type="StopName" formControlName="StopName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.StopName.errors }" />
+    
+  </div>
+  <div class="form-group">
+    <label for="StopID">StopID</label>
+    <input type="StopID" formControlName="StopID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.StopID.errors }" />
+    <div *ngIf="submitted && f.StopID.errors" class="invalid-feedback">
+      <div *ngIf="f.StopID.errors.required">StopID is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button id="insertButton" class="btn btn-primary" (click)="insertButtonFunction()">Insert</button>
+    <button id="deleteButton" class="btn btn-primary" (click)="deleteButtonFunction()">Delete</button>
+    <button id="updateButton" class="btn btn-primary" (click)="updateButtonFunction()">Update</button>
+    <button id="getAllButton" class="btn btn-primary" (click)="getAllButtonFunction()">Get All</button>
+    <button id="getByIdButton" class="btn btn-primary" (click)="getByIdButtonFunction()">Get by ID</button>
+  </div>
+</form>
+<div>
+  <p>     LatitudeDegree   LatitudeMinute    LatitudeSecond  LongitudeDegree  LongitudeMinute LongitudeSecond  StopID  StopName</p>
+    <p>All Bus Stops: </p> {{ returnAllValuesString }}
+</div>
+
+<div>
+    <p>      </p>
+      <p>Selected Bus Stop: StopID  StopName </p> {{ busStopId }}
+  </div>

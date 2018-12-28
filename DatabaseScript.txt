@@ -1,0 +1,761 @@
+CREATE DATABASE BusTrackingSystemDatabase;
+
+CREATE TABLE Employee(
+	FName varchar(50),
+	MName varchar(50),
+	LName varchar(50),
+	Salary int,
+	SSN int IDENTITY(1,1) PRIMARY KEY 
+
+);
+
+go
+CREATE procedure sp_getEmpbySSN(@SSN int)
+as
+begin
+select * from Employee where SSN = @SSN
+end
+
+exec sp_getEmpbySSN @SSN = 1
+
+go
+CREATE procedure sp_getEmp
+as
+begin
+select * from Employee
+end
+
+exec sp_getEmp
+
+go
+CREATE procedure sp_insertEmp(@FName varchar(50), @MName varchar(50), @LName varchar(50),@Salary int, @SSN int)
+as
+begin
+insert into Employee values (@FName, @MName, @LName,@Salary, @SSN)
+end
+
+go
+CREATE procedure sp_updateEmp(@FName varchar(50), @MName varchar(50), @LName varchar(50),@Salary int, @SSN int)
+as
+begin
+update Employee set FName = @FName, MName = @MName, LName = @LName,Salary = @Salary, SSN = @SSN where SSN = @SSN
+end
+go
+
+go
+CREATE procedure sp_deleteEmp(@SSN int)
+as
+begin
+delete from Employee where SSN = @SSN
+end
+
+CREATE VIEW GetSalary AS
+SELECT Salary
+FROM Employee
+WHERE Salary > (SELECT AVG(Salary) FROM Employee)
+go
+--trigger code
+/* After Insert trigger on employee table */
+INSERT INTO Employee(FName, MName, LName, Salary) VALUES ('Abuzer', 'Yandan', 'Bakan',1000);
+INSERT INTO Employee(FName, MName, LName, Salary) VALUES ('þemsettin', 'Yandann', 'Bakann',2000) ;
+INSERT INTO Employee(FName, MName, LName, Salary) VALUES ('kukulet', 'Yandannn', 'Bakannn',300) ;
+INSERT INTO Employee(FName, MName, LName, Salary) VALUES ('þehriban', 'Yandannnn', 'Bakannnn',1000); 
+INSERT INTO Employee(FName, MName, LName, Salary) VALUES ('ornitorenk', 'Yandannnnn', 'Bakannnnn',2000) ;
+INSERT INTO Employee(FName, MName, LName, Salary) VALUES ('ceviz', 'Yandannnnnn', 'Bakannnnnn',1500) ;
+INSERT INTO Employee(FName, MName, LName, Salary) VALUES ('þemsi', 'Yandannnnnnn', 'Bakannnnnn',1750) ;
+
+
+IF OBJECT_ID('TRG_InsertSyncEmp') IS NOT NULL
+DROP TRIGGER TRG_InsertSyncEmp
+GO
+
+CREATE TRIGGER TRG_InsertSyncEmp 
+ON dbo.Employee
+AFTER INSERT AS
+BEGIN
+INSERT INTO Employee
+SELECT * FROM INSERTED
+END
+GO
+/* Insert a record in employee table. An Insert trigger will be executed here, 
+   and the same record will be inserted into employee_backup table */
+/* See both tables are in sync with same number of records */
+SELECT * from Employee 
+GO
+
+IF OBJECT_ID('TRG_UpdateSyncEmp') IS NOT NULL
+DROP TRIGGER TRG_UpdateSyncEmp
+GO
+
+CREATE TRIGGER TRG_UpdateSyncEmp 
+ON dbo.Employee
+AFTER UPDATE AS
+BEGIN
+UPDATE Employee
+SET Salary = Salary + 1000
+WHERE Salary < 1000
+END
+GO
+
+CREATE TABLE AdminInformation(
+	AdminName varchar(50),
+	AdminID int IDENTITY(1,1) PRIMARY KEY
+	
+);
+INSERT INTO AdminInformation(AdminName) VALUES ('Abuzittin') 
+INSERT INTO AdminInformation(AdminName) VALUES ('Kemalettin') 
+INSERT INTO AdminInformation(AdminName) VALUES ('Þemsettin') 
+INSERT INTO AdminInformation(AdminName) VALUES ('Yandanbittin') 
+INSERT INTO AdminInformation(AdminName) VALUES ('Üsttenbitmedin')
+
+go
+CREATE procedure sp_getAdminInformationbyAdminID(@AdminID int)
+as
+begin
+select * from AdminInformation where AdminID = @AdminID
+end
+
+
+go
+
+drop procedure sp_getAdminInformation
+
+CREATE procedure sp_getAdminInformation
+as
+begin
+select * from AdminInformation
+end
+
+go
+CREATE procedure sp_insertAdminInformation(@AdminName varchar(50))
+as
+begin
+insert into AdminInformation values (@AdminName)
+end
+ 
+ go
+CREATE procedure sp_updateAdminInformation(@AdminName varchar(50), @AdminID int)
+as
+begin
+update AdminInformation set AdminName = @AdminName where AdminID = @AdminID
+end
+go
+
+go
+CREATE procedure sp_deleteAdminInformation(@AdminID int)
+as
+begin
+delete from AdminInformation where AdminID = @AdminID
+end
+
+IF OBJECT_ID('TRG_InsertSyncAdmin') IS NOT NULL
+DROP TRIGGER TRG_InsertSyncAdmin
+GO
+CREATE TRIGGER TRG_InsertSyncAdmin 
+ON dbo.AdminInformation
+AFTER INSERT AS
+BEGIN
+INSERT INTO AdminInformation
+SELECT AdminName FROM INSERTED
+END
+GO
+SELECT * from AdminInformation 
+GO
+
+CREATE VIEW GetAdmin AS
+SELECT AdminID
+FROM AdminInformation
+WHERE AdminName LIKE '%a%'
+go
+
+CREATE TABLE Bus(
+	BusID int NOT NULL PRIMARY KEY
+);
+INSERT INTO Bus(BusID) VALUES (1) 
+INSERT INTO Bus(BusID) VALUES (2)
+INSERT INTO Bus(BusID) VALUES (3)
+INSERT INTO Bus(BusID) VALUES (4)
+INSERT INTO Bus(BusID) VALUES (5)
+INSERT INTO Bus(BusID) VALUES (6)
+INSERT INTO Bus(BusID) VALUES (7)
+
+go
+CREATE procedure sp_getBus
+as
+begin
+select * from Bus
+end
+
+go
+CREATE procedure sp_insertBus(@BusID int)
+as
+begin
+insert into Bus values (@BusID)
+end 
+
+ go
+CREATE procedure sp_updateBus(@BusID int)
+as
+begin
+update Bus set BusID = @BusID where BusID = @BusID
+end
+go
+
+go
+CREATE procedure sp_deleteBus(@BusID int)
+as
+begin
+delete from Bus where BusID = @BusID
+end
+
+IF OBJECT_ID('TRG_InsertSyncBus') IS NOT NULL
+DROP TRIGGER TRG_InsertSyncBus
+GO
+CREATE TRIGGER TRG_InsertSyncBus 
+ON dbo.Bus
+AFTER INSERT AS
+BEGIN
+INSERT INTO Bus
+SELECT * FROM INSERTED
+END
+GO
+SELECT * from Bus 
+GO
+
+CREATE VIEW GetBusLessThan5 AS
+SELECT BusID
+FROM Bus
+WHERE BusID < 5
+go
+
+
+CREATE TABLE VehicleInformation(
+	VehicleName varchar(50),
+	VehicleID int IDENTITY(1,1) PRIMARY KEY,
+	VehicleType varchar(50)
+);
+INSERT INTO VehicleInformation(VehicleName, VehicleType ) VALUES ('berlinetta','ferrari') 
+INSERT INTO VehicleInformation(VehicleName,  VehicleType ) VALUES ('berlinetta','f12') 
+INSERT INTO VehicleInformation(VehicleName,  VehicleType ) VALUES ('þahin','beyaz kuþ') 
+INSERT INTO VehicleInformation(VehicleName,  VehicleType ) VALUES ('toyota','auris') 
+INSERT INTO VehicleInformation(VehicleName,  VehicleType ) VALUES ('toyota','verso') 
+
+go
+CREATE procedure sp_getVehicleInformation
+as
+begin
+select * from VehicleInformation
+end
+
+go
+CREATE procedure sp_insertVehicleInformation(@VehicleName varchar(50), @VehicleType varchar(50))
+as
+begin
+insert into VehicleInformation values (@VehicleName, @VehicleType )
+end 
+
+
+go
+CREATE procedure sp_updateVehicleInformation(@VehicleName varchar(50),@VehicleID int, @VehicleType varchar(50))
+as
+begin
+update VehicleInformation set VehicleName = @VehicleName, VehicleID = @VehicleID, VehicleType = @VehicleType where  VehicleID = @VehicleID
+end
+go
+
+go
+CREATE procedure sp_deleteVehicleInformation(@VehicleID int)
+as
+begin
+delete from VehicleInformation where VehicleID = @VehicleID
+end
+
+IF OBJECT_ID('TRG_DeleteFerrariBus') IS NOT NULL
+DROP TRIGGER TRG_DeleteFerrariBus
+GO
+
+CREATE TRIGGER TRG_DeleteFerrariBus 
+ON dbo.VehicleInformation
+AFTER DELETE AS
+BEGIN
+DELETE 
+FROM VehicleInformation
+WHERE VehicleInformation.VehicleType LIKE 'ferrari'
+END
+GO
+
+CREATE VIEW GetBerlinetta AS
+SELECT VehicleID, VehicleType
+FROM VehicleInformation
+WHERE VehicleName LIKE 'berlinetta'
+go
+
+CREATE TABLE BusStops(
+	LatitudeDegree int,
+	LatitudeMinute int,
+	LatitudeSecond int,
+	LongitudeDegree int,
+	LongitudeMinute int,
+	LongitudeSecond int,
+	StopName varchar(50),
+	StopID int IDENTITY(1,1) PRIMARY KEY
+);
+
+
+INSERT INTO BusStops(LatitudeDegree,LatitudeMinute,LatitudeSecond,LongitudeDegree,LongitudeMinute,LongitudeSecond,StopName
+) VALUES (27,12,17,28,12,18,'ada kuþu') 
+INSERT INTO BusStops(LatitudeDegree,LatitudeMinute,LatitudeSecond,LongitudeDegree,LongitudeMinute,LongitudeSecond,StopName
+) VALUES (12,12,15,25,13,11,'ada ördeði') 
+INSERT INTO BusStops(LatitudeDegree,LatitudeMinute,LatitudeSecond,LongitudeDegree,LongitudeMinute,LongitudeSecond,StopName
+) VALUES (28,15,19,22,10,8,'ada böceði') 
+
+go
+CREATE procedure sp_insertBusStops(@LatitudeDegree int,@LatitudeMinute int, @LatitudeSecond int,@LongitudeDegree int, @LongitudeMinute int, @LongitudeSecond int ,@StopName varchar(50))
+as
+begin
+insert into BusStops values (@LatitudeDegree, @LatitudeMinute, @LatitudeSecond ,@LongitudeDegree,@LongitudeMinute ,@LongitudeSecond, @StopName )
+end 
+
+go
+CREATE procedure sp_getBusStops
+as
+begin
+select * from BusStops
+end
+
+go
+CREATE procedure sp_deleteBusStops(@StopID int)
+as
+begin
+delete from BusStops where StopID = @StopID
+end
+
+go
+CREATE procedure sp_updateBusStops(@LatitudeDegree int,@LatitudeMinute int, @LatitudeSecond int,@LongitudeDegree int, @LongitudeMinute int, @LongitudeSecond int ,@StopName varchar(50),@StopID int)
+as
+begin
+update BusStops set LatitudeDegree = @LatitudeDegree, LatitudeMinute = @LatitudeMinute, LatitudeSecond = @LatitudeSecond, LongitudeDegree = @LongitudeDegree,LongitudeMinute = @LongitudeMinute, LongitudeSecond = @LongitudeSecond, StopName =@StopName, StopID = @StopID where StopID = @StopID
+end
+go
+
+IF OBJECT_ID('TRG_InsertSyncBusStop') IS NOT NULL
+DROP TRIGGER TRG_InsertSyncBusStop
+GO
+CREATE TRIGGER TRG_InsertSyncBusStop 
+ON dbo.BusStops
+AFTER INSERT AS
+BEGIN
+INSERT INTO BusStops
+SELECT * FROM INSERTED
+END
+GO
+SELECT * from BusStops 
+GO
+
+CREATE VIEW GetStopDegree AS
+SELECT LatitudeDegree, LongitudeDegree
+FROM BusStops
+WHERE LatitudeMinute > 10 AND LongitudeMinute < 13
+go
+
+CREATE TABLE RouteInformation(
+	RouteNo int NOT NULL PRIMARY KEY,
+	RouteName varchar(50)
+);
+
+INSERT INTO RouteInformation(RouteNo,RouteName )VALUES(1,'beyaz þahin') 
+INSERT INTO RouteInformation(RouteNo,RouteName )VALUES(2,'siyah ördek') 
+INSERT INTO RouteInformation(RouteNo,RouteName )VALUES(3,'kara balýk') 
+
+CREATE procedure sp_insertRouteInformation(@RouteNo int,@RouteName varchar(50))
+as
+begin
+insert into RouteInformation values (@RouteNo, @RouteName)
+end 
+
+go
+CREATE procedure sp_getRouteInformation
+as
+begin
+select * from RouteInformation
+end
+
+go
+CREATE procedure sp_deleteRouteInformation(@RouteNo int)
+as
+begin
+delete from RouteInformation where RouteNo = @RouteNo
+end
+
+go
+CREATE procedure sp_updateRouteInformation(@RouteNo int,@RouteName varchar(50))
+as
+begin
+update RouteInformation set RouteNo = @RouteNo, RouteName = @RouteName where RouteNo = @RouteNo
+end
+go
+
+IF OBJECT_ID('TRG_DeleteRoute') IS NOT NULL
+DROP TRIGGER TRG_DeleteRoute
+GO
+
+CREATE TRIGGER TRG_DeleteRoute 
+ON dbo.RouteInformation
+AFTER DELETE AS
+BEGIN
+DELETE 
+FROM RouteInformation
+WHERE RouteName  LIKE '[!bsp]%'
+END
+GO
+
+CREATE VIEW GetRoute AS
+SELECT RouteNo
+FROM RouteInformation
+WHERE RouteName LIKE '%e%'
+go
+
+
+CREATE TABLE UserInformation(
+	UserName varchar(50),
+	UserID int NOT NULL PRIMARY KEY,
+	Password varchar(50),
+	Birthdate date,
+	Address varchar(250)
+);
+
+INSERT INTO UserInformation(UserName,UserID, Password,Birthdate,Address)VALUES('abuzittiin',1,'987654','2015-08-05','kuzey batý marmara') 
+INSERT INTO UserInformation(UserName,UserID, Password,Birthdate,Address)VALUES('kalemettin',2,'652314','1997-07-18','kuzey batý doðu') 
+INSERT INTO UserInformation(UserName,UserID, Password,Birthdate,Address)VALUES('silgilittin',3,'12345','2006-02-03','kuzey batý ege') 
+
+CREATE procedure sp_insertUserInformation(@UserName varchar(50),@UserID int,@Password varchar(50),@Birthdate date,@Address varchar(50))
+as
+begin
+insert into UserInformation values (@UserName, @UserID,@Password,@Birthdate,@Address )
+end 
+
+go
+CREATE procedure sp_getUserInformation
+as
+begin
+select * from UserInformation
+end
+
+go
+CREATE procedure sp_deleteUserInformation(@UserID int)
+as
+begin
+delete from UserInformation where UserID = @UserID
+end
+
+go
+CREATE procedure sp_updateUserInformation(@UserName varchar(50),@UserID int,@Password varchar(50),@Birthdate date,@Address varchar(50))
+as
+begin
+update UserInformation set UserName = @UserName, UserID = @UserID, Password = @Password, Birthdate = @Birthdate, Address = @Address where UserID = @UserID
+end
+go
+
+CREATE TABLE Request(
+	RequestID int IDENTITY(1,1) PRIMARY KEY,
+	RequestType varchar(50)
+);
+
+INSERT INTO Request( RequestType) VALUES ( 'GET') 
+INSERT INTO Request( RequestType) VALUES ( 'POST') 
+INSERT INTO Request( RequestType) VALUES ( 'GET') 
+INSERT INTO Request( RequestType) VALUES ( 'POST') 
+INSERT INTO Request( RequestType) VALUES ( 'GET') 
+
+CREATE procedure sp_insertRequest(@RequestType varchar(50))
+as
+begin
+insert into Request values (@RequestType)
+end 
+
+go
+CREATE procedure sp_getRequest
+as
+begin
+select * from Request
+end
+
+go
+CREATE procedure sp_deleteRequest(@RequestID int)
+as
+begin
+delete from Request where RequestID = @RequestID
+end
+
+go
+CREATE procedure sp_updateRequest(@RequestID int, @RequestType varchar(50))
+as
+begin
+update Request set RequestID = @RequestID, RequestType = @RequestType where RequestID = @RequestID
+end
+go
+
+IF OBJECT_ID('TRG_InsertSyncRequest') IS NOT NULL
+DROP TRIGGER TRG_InsertSyncRequest
+GO
+CREATE TRIGGER TRG_InsertSyncRequest 
+ON dbo.Request
+AFTER INSERT AS
+BEGIN
+INSERT INTO Request
+SELECT * FROM INSERTED
+END
+GO
+SELECT * from Request 
+GO
+
+CREATE VIEW GetPostRequest AS
+SELECT RequestID
+FROM Request
+WHERE RequestType LIKE 'POST'
+go
+
+
+CREATE TABLE PassRegistration(
+	FromRegistration varchar(50),
+	ToRegistration varchar(50),
+	RegistrationID int NOT NULL PRIMARY KEY,
+	UserID int NOT NULL ,
+	DistanceBetween int,
+	FOREIGN KEY (UserID) REFERENCES UserInformation(UserID)
+
+);
+INSERT INTO PassRegistration(FromRegistration, ToRegistration,RegistrationID,UserID,DistanceBetween) VALUES ('hay','huy',1,1,100) 
+INSERT INTO PassRegistration(FromRegistration, ToRegistration,RegistrationID,UserID,DistanceBetween) VALUES ('kuzey','güney',2,2,200) 
+INSERT INTO PassRegistration(FromRegistration, ToRegistration,RegistrationID,UserID,DistanceBetween) VALUES ('doðu','batý',3,3,-3) 
+INSERT INTO PassRegistration(FromRegistration, ToRegistration,RegistrationID,UserID,DistanceBetween) VALUES ('huy','hay',4,4,400) 
+
+IF OBJECT_ID('TRG_DeletePassRegistration') IS NOT NULL
+DROP TRIGGER TRG_DeletePassRegistration
+GO
+
+go
+CREATE TRIGGER TRG_DeletePassRegistration 
+ON dbo.PassRegistration
+AFTER DELETE AS
+BEGIN
+DELETE 
+FROM RouteInformation
+WHERE RouteName  LIKE '[!bsp]%'
+END
+GO
+
+CREATE procedure sp_insertPassRegistration(@FromRegistration varchar(50),@ToRegistration varchar(50),@RegistrationID int,@UserID int,@DistanceBetween int)
+as
+begin
+insert into PassRegistration values (@FromRegistration, @ToRegistration, @RegistrationID, @UserID, @DistanceBetween )
+end 
+
+go
+CREATE procedure sp_getPassRegistration
+as
+begin
+select * from PassRegistration
+end
+
+go
+CREATE procedure sp_deletePassRegistration(@RegistrationID int )
+as
+begin
+delete from PassRegistration where RegistrationID = @RegistrationID
+end
+
+IF OBJECT_ID('TRG_DeletePassRegistrationTable') IS NOT NULL
+DROP TRIGGER TRG_DeletePassRegistrationTable
+GO
+
+CREATE TRIGGER TRG_DeletePassRegistrationTable 
+ON dbo.PassRegistration
+AFTER DELETE AS
+BEGIN
+DELETE 
+FROM UserInformation
+WHERE UserID  = UserInformation.UserID 
+END
+GO
+
+go
+CREATE procedure sp_updatePassRegistration(@FromRegistration varchar(50), @ToRegistration varchar(50), @RegistrationID int ,@UserID int, @DistanceBetween int)
+as
+begin
+update PassRegistration set FromRegistration = @FromRegistration, ToRegistration = @ToRegistration, RegistrationID = @RegistrationID, UserID = @UserID, DistanceBetween = @DistanceBetween where RegistrationID = @RegistrationID
+end
+go
+
+IF OBJECT_ID('TRG_SetWrongDistance') IS NOT NULL
+DROP TRIGGER TRG_SetWrongDistance
+GO
+
+CREATE TRIGGER TRG_SetWrongDistance 
+ON dbo.PassRegistration
+AFTER  UPDATE AS
+BEGIN
+UPDATE PassRegistration
+SET PassRegistration.DistanceBetween = 0
+FROM PassRegistration 
+INNER JOIN  UserInformation ON PassRegistration.UserID = UserInformation.UserID 
+WHERE PassRegistration.DistanceBetween < 0
+END
+GO
+
+
+IF OBJECT_ID('TRG_SetPassword') IS NOT NULL
+DROP TRIGGER TRG_SetPassword
+GO
+
+CREATE TRIGGER TRG_SetPassword 
+ON dbo.UserInformation
+AFTER  UPDATE AS
+BEGIN
+UPDATE UserInformation
+SET UserInformation.Password = '12345'
+FROM UserInformation 
+INNER JOIN  PassRegistration ON UserInformation.UserID = PassRegistration.UserID  
+END
+GO
+
+CREATE VIEW GetUserName AS
+SELECT UserName, UserID
+FROM UserInformation
+WHERE Birthdate > '2008-11-11'
+go
+
+
+
+
+CREATE TABLE Verification(
+	UserID int NOT NULL,
+	RegistrationID int NOT NULL,
+	FOREIGN KEY (UserID) REFERENCES UserInformation(UserID),
+	FOREIGN KEY (RegistrationID) REFERENCES PassRegistration(RegistrationID)
+
+);
+
+INSERT INTO Verification(UserID, RegistrationID) VALUES (1, 1) 
+INSERT INTO Verification(UserID, RegistrationID) VALUES (2, 2) 
+INSERT INTO Verification(UserID, RegistrationID) VALUES (3, 3) 
+INSERT INTO Verification(UserID, RegistrationID) VALUES (4, 4) 
+
+CREATE procedure sp_insertVerification(@UserID int,@RegistrationID int)
+as
+begin
+insert into Verification values (@UserID, @RegistrationID)
+end 
+
+go
+CREATE procedure sp_getVerification
+as
+begin
+select * from Verification
+end
+
+go
+CREATE procedure sp_deleteEmp(@SSN int)
+as
+begin
+delete from Employee where SSN = @SSN
+end
+
+go
+CREATE procedure sp_updateEmp(@FName varchar(50), @MName varchar(50), @LName varchar(50),@Salary int, @SSN int)
+as
+begin
+update Employee set FName = @FName, MName = @MName, LName = @LName,Salary = @Salary, SSN = @SSN where SSN = @SSN
+end
+go
+
+IF OBJECT_ID('TRG_InsertSyncVerification') IS NOT NULL
+DROP TRIGGER TRG_InsertSyncVerification
+GO
+CREATE TRIGGER TRG_InsertSyncVerification 
+ON dbo.Verification
+AFTER INSERT AS
+BEGIN
+INSERT INTO Verification
+SELECT * FROM INSERTED
+END
+GO
+SELECT * from Verification 
+GO
+
+CREATE VIEW GetPostRequestView AS
+SELECT Verification.UserID, Verification.RegistrationID
+FROM Verification
+INNER JOIN PassRegistration ON Verification.UserID = PassRegistration.UserID
+WHERE PassRegistration.DistanceBetween > 100
+go
+
+
+CREATE TABLE PassGeneration(
+	DistanceBetween int,
+	Cost int,
+	RegistrationID int NOT NULL
+	FOREIGN KEY (RegistrationID) REFERENCES PassRegistration(RegistrationID)
+);
+
+INSERT INTO PassGeneration(DistanceBetween,Cost,RegistrationID)VALUES(100,75,1)
+INSERT INTO PassGeneration(DistanceBetween,Cost,RegistrationID)VALUES(175,125,2)
+INSERT INTO PassGeneration(DistanceBetween,Cost,RegistrationID)VALUES(250,50,3)
+INSERT INTO PassGeneration(DistanceBetween,Cost,RegistrationID)VALUES(500,150,4)
+INSERT INTO PassGeneration(DistanceBetween,Cost,RegistrationID)VALUES(375,100,5)
+
+CREATE procedure sp_insertPassGeneration(@DistanceBetween int,@Cost int, @RegistrationID int)
+as
+begin
+insert into PassGeneration values (@DistanceBetween, @Cost, @RegistrationID)
+end 
+
+go
+CREATE procedure sp_getPassGeneration
+as
+begin
+select * from PassGeneration
+end
+
+go
+CREATE procedure sp_deleteEmp(@SSN int)
+as
+begin
+delete from Employee where SSN = @SSN
+end
+
+go
+CREATE procedure sp_updateEmp(@FName varchar(50), @MName varchar(50), @LName varchar(50),@Salary int, @SSN int)
+as
+begin
+update Employee set FName = @FName, MName = @MName, LName = @LName,Salary = @Salary, SSN = @SSN where SSN = @SSN
+end
+go
+
+IF OBJECT_ID('TRG_UpdateSyncPassDistanceBetween') IS NOT NULL
+DROP TRIGGER TRG_UpdateSyncPassDistanceBetween
+GO
+
+CREATE TRIGGER TRG_UpdateSyncPassDistanceBetween 
+ON dbo.PassGeneration
+AFTER UPDATE AS
+BEGIN
+UPDATE PassGeneration
+SET DistanceBetween = DistanceBetween + 100
+WHERE Cost > (SELECT AVG(Cost) FROM PassRegistration);
+END
+GO
+
+CREATE VIEW GetPassGeneration AS
+SELECT Cost
+FROM PassGeneration
+INNER JOIN Verification ON PassGeneration.RegistrationID = Verification.RegistrationID
+WHERE Verification.UserID = 3
+go
+
+CREATE VIEW getRegistrationView AS
+SELECT RegistrationID, FromRegistration,ToRegistration
+FROM PassRegistration
+WHERE PassRegistration.DistanceBetween > (SELECT AVG(DistanceBetween) FROM PassRegistration);
+go
+

@@ -1,0 +1,50 @@
+<h2>Pass Generation</h2>
+<form [formGroup]="passGenerationForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="PassGenerationID">PassGenerationID</label>
+    <input type="text" formControlName="PassGenerationID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PassGenerationID.errors }" />
+    <div *ngIf="submitted && f.PassGenerationID.errors" class="invalid-feedback">
+      <div *ngIf="f.PassGenerationID.errors.required">PassGenerationID is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="DistanceBetween">DistanceBetween</label>
+    <input type="text" formControlName="DistanceBetween" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.DistanceBetween.errors }" />
+  </div>
+  <div class="form-group">
+    <label for="Cost">Cost</label>
+    <input type="text" formControlName="Cost" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Cost.errors }" />
+  </div>
+  <div class="form-group">
+    <label for="RegistrationID">RegistrationID</label>
+    <input type="text" formControlName="RegistrationID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RegistrationID.errors }" />
+    <div *ngIf="submitted && f.RegistrationID.errors" class="invalid-feedback">
+      <div *ngIf="f.RegistrationID.errors.required">RegistrationID is required</div>
+    </div>
+  </div>
+ 
+  <div class="form-group">
+      <button id="insertButton" class="btn btn-primary" (click)="insertButtonFunction()">Insert</button>
+      <button id="deleteButton" class="btn btn-primary" (click)="deleteButtonFunction()">Delete</button>
+      <button id="updateButton" class="btn btn-primary" (click)="updateButtonFunction()">Update</button>
+      <button id="getAllButton" class="btn btn-primary" (click)="getAllButtonFunction()">Get All</button>
+      <button id="getByIdButton" class="btn btn-primary" (click)="getByIdButtonFunction()">Get by ID</button>
+
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Insert</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Delete</a>-> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Update</a> -> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get All Employees</a> -->
+    <!--       <a [routerLink]="['/register']" class="btn btn-link">Get Employee by SSN</a>  -->
+  </div>
+</form>
+
+<div>
+    <p>                   PassGenerationID    DistanceBetween    Cost   RegistrationID   </p>
+      <p>All Pass Generations: </p> {{ passGenerationIds }}
+  </div>
+  
+  
+  <div>
+      <p>                   PassGenerationID    DistanceBetween    Cost   RegistrationID   </p>
+        <p>Selected Pass Generation By Generation ID: </p> {{ passGenerationId }}
+    </div>
